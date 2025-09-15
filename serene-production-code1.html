@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan d'Action IA - Serene Production</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js" type="module"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .slide {
+            min-height: 90vh;
+        }
+        .loading-animation {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .toast.show {
+            visibility: visible;
+            animation: fadeInOut 4s ease-in-out forwards;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-emerald-50 text-stone-800">
+
+    <div class="flex">
+        <nav id="nav-menu" class="hidden lg:block sticky top-0 h-screen bg-white shadow-lg p-6 w-64">
+            <h2 class="text-xl font-bold text-stone-900 mb-2">Serene AI</h2>
+            <p class="text-sm text-stone-500 mb-8">Plan d'Optimisation</p>
+            <ul class="space-y-4">
+                <li><a href="#slide1" class="nav-link text-stone-600 hover:text-sky-600 font-medium">Introduction</a></li>
+                <li><a href="#slide2" class="nav-link text-stone-600 hover:text-sky-600 font-medium">Le Défi Quotidien</a></li>
+                <li><a href="#slide3" class="nav-link text-stone-600 hover:text-sky-600 font-medium">Cas d'Usage Prioritaires</a></li>
+                <li><a href="#slide4" class="nav-link text-stone-600 hover:text-sky-600 font-medium">Visualiser l'Impact</a></li>
+                <li><a href="#slide6" class="nav-link text-stone-600 hover:text-sky-600 font-medium">Assistant IA en Action</a></li>
+                <li><a href="#slide5" class="nav-link text-stone-600 hover:text-sky-600 font-medium">Plan d'Action</a></li>
+            </ul>
+        </nav>
+
+        <main class="w-full p-4 md:p-10 lg:p-12">
+
+            <section id="slide1" class="slide flex flex-col items-center justify-center text-center bg-white rounded-2xl shadow-xl p-8">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-6xl font-bold text-stone-900 leading-tight">Optimiser Votre Production avec l'IA</h1>
+                    <p class="mt-4 text-lg md:text-xl text-stone-600">Un plan d'action sur-mesure pour Charlie Borradaile</p>
+                    <p class="mt-2 text-2xl font-bold text-emerald-700">Serene Production</p>
+                    <div class="mt-8 flex justify-center items-center space-x-2 text-stone-500">
+                        <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
+                        <span>Faites défiler pour commencer</span>
+                        <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="slide2" class="slide mt-12 flex flex-col items-center justify-center bg-white rounded-2xl shadow-xl p-8">
+                 <div class="max-w-4xl text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-stone-900">Le Défi Quotidien d'un Executive Producer</h2>
+                    <p class="mt-4 text-lg text-stone-600">Votre temps est partagé entre des tâches essentielles mais chronophages. L'objectif de l'IA est de vous libérer de la charge mentale et répétitive pour que vous puissiez vous concentrer sur ce qui compte le plus : la créativité, la stratégie et les relations clients.</p>
+                </div>
+                <div class="mt-12 w-full max-w-5xl grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="bg-stone-100 p-6 rounded-lg">
+                        <div class="text-4xl">📧</div>
+                        <h3 class="mt-2 font-bold">Emails & Comms</h3>
+                        <p class="text-sm text-stone-500">Flux incessant d'échanges</p>
+                    </div>
+                    <div class="bg-stone-100 p-6 rounded-lg">
+                        <div class="text-4xl">🗓️</div>
+                        <h3 class="mt-2 font-bold">Planning & Logistique</h3>
+                        <p class="text-sm text-stone-500">Coordination complexe</p>
+                    </div>
+                    <div class="bg-stone-100 p-6 rounded-lg">
+                        <div class="text-4xl">📊</div>
+                        <h3 class="mt-2 font-bold">Budgets & Rapports</h3>
+                        <p class="text-sm text-stone-500">Suivi et analyse manuels</p>
+                    </div>
+                     <div class="bg-stone-100 p-6 rounded-lg">
+                        <div class="text-4xl">💡</div>
+                        <h3 class="mt-2 font-bold">Briefs & Créativité</h3>
+                        <p class="text-sm text-stone-500">Synthèse et idéation</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="slide3" class="slide mt-12 flex flex-col justify-center bg-white rounded-2xl shadow-xl p-8">
+                <div class="w-full max-w-5xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-stone-900 text-center">Votre Assistant IA Personnel : Cas d'Usage Prioritaires</h2>
+                    <p class="mt-4 text-lg text-stone-600 text-center mb-12">Commençons par des solutions à fort impact et faciles à intégrer dans vos outils actuels.</p>
+                    
+                    <div class="space-y-8">
+                        <div class="p-6 border border-stone-200 rounded-lg bg-stone-50/50 transition-shadow hover:shadow-md">
+                            <h3 class="text-xl font-bold text-emerald-700">Priorité 1 : Maîtriser les Communications</h3>
+                            <div class="mt-4 grid md:grid-cols-3 gap-6 text-sm">
+                                <div><strong class="block text-stone-700">Cas d'usage :</strong> Rédiger et résumer des emails, transcrire et synthétiser des réunions (briefs, débriefs clients).</div>
+                                <div><strong class="block text-stone-700">Outil recommandé :</strong> Fonctions IA de <strong class="text-amber-700">Google Workspace (Gmail, Meet)</strong>.</div>
+                                <div><strong class="block text-stone-700">Impact attendu :</strong> Gain de temps massif (5-7h/semaine), communication plus claire, moins d'oublis.</div>
+                            </div>
+                            <div class="mt-4 p-4 bg-white rounded text-sm text-stone-600 border border-stone-200">
+                                <strong>Exemple concret :</strong> Après un appel client sur Google Meet, recevez automatiquement un résumé des points clés et des actions à mener. Utilisez ensuite la fonction "Help me write" dans Gmail pour rédiger un email de suivi basé sur ce résumé en quelques secondes.
+                            </div>
+                        </div>
+
+                        <div class="p-6 border border-stone-200 rounded-lg bg-stone-50/50 transition-shadow hover:shadow-md">
+                            <h3 class="text-xl font-bold text-emerald-700">Priorité 2 : Centraliser la Connaissance Projet</h3>
+                            <div class="mt-4 grid md:grid-cols-3 gap-6 text-sm">
+                                <div><strong class="block text-stone-700">Cas d'usage :</strong> Retrouver instantanément une information dans les scripts, budgets, plannings, ou notes. Préparer des réunions en posant des questions sur vos documents.</div>
+                                <div><strong class="block text-stone-700">Outil recommandé :</strong> <strong class="text-amber-700">Google NotebookLM</strong>.</div>
+                                <div><strong class="block text-stone-700">Impact attendu :</strong> Réduction du temps de recherche, meilleure préparation, décisions basées sur l'information la plus récente.</div>
+                            </div>
+                             <div class="mt-4 p-4 bg-white rounded text-sm text-stone-600 border border-stone-200">
+                                <strong>Exemple concret :</strong> Importez le script, le budget prévisionnel et les notes du client dans un "notebook" pour un nouveau projet. Avant un appel, demandez : "Quels sont les points de vigilance soulevés par le client dans ses notes ?" et obtenez une synthèse immédiate.
+                            </div>
+                        </div>
+
+                        <div class="p-6 border border-stone-200 rounded-lg bg-stone-50/50 transition-shadow hover:shadow-md">
+                            <h3 class="text-xl font-bold text-emerald-700">Priorité 3 : Optimiser le Suivi de Production</h3>
+                             <div class="mt-4 grid md:grid-cols-3 gap-6 text-sm">
+                                <div><strong class="block text-stone-700">Cas d'usage :</strong> Générer des plannings prévisionnels, analyser les coûts, créer des rapports d'avancement.</div>
+                                <div><strong class="block text-stone-700">Outil recommandé :</strong> <strong class="text-amber-700">Gemini dans Google Sheets</strong>.</div>
+                                <div><strong class="block text-stone-700">Impact attendu :</strong> Meilleure anticipation des risques (budget, planning), reporting simplifié, réduction des erreurs de saisie.</div>
+                            </div>
+                             <div class="mt-4 p-4 bg-white rounded text-sm text-stone-600 border border-stone-200">
+                                <strong>Exemple concret :</strong> Dans un Google Sheet listant les dépenses, utilisez Gemini pour catégoriser automatiquement chaque ligne (ex: "transport", "HMC", "catering") et générer un graphique montrant la répartition des coûts en temps réel.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="slide4" class="slide mt-12 flex flex-col items-center justify-center bg-white rounded-2xl shadow-xl p-8">
+                <div class="w-full max-w-4xl text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-stone-900">Visualiser l'Impact : Gain de Temps Hebdomadaire Estimé</h2>
+                    <p class="mt-4 mb-10 text-lg text-stone-600">En adoptant ces quelques outils, voici une projection conservatrice du temps que vous pourriez réallouer à des tâches à plus forte valeur ajoutée.</p>
+                    <div class="chart-container relative h-96 w-full max-w-3xl mx-auto">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="slide6" class="slide mt-12 flex flex-col justify-center bg-white rounded-2xl shadow-xl p-8">
+                <div class="w-full max-w-5xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold text-stone-900 text-center">Votre Assistant IA en Action</h2>
+                    <p class="mt-4 text-lg text-stone-600 text-center mb-12">Voici comment l'IA peut assister vos tâches quotidiennes. Essayez-les vous-même !</p>
+                    
+                    <div class="space-y-8">
+                        <!-- Résumer un document -->
+                        <div class="p-6 border border-stone-200 rounded-lg bg-stone-50/50">
+                            <h3 class="text-xl font-bold text-emerald-700">✨ Résumer un Document</h3>
+                            <p class="mt-2 text-sm text-stone-600">Collez un texte long (email, notes de réunion, etc.) et demandez à l'IA de le résumer en quelques points clés.</p>
+                            <textarea id="text-input-summarize" class="mt-4 w-full p-4 border border-stone-300 rounded-lg" rows="5" placeholder="Collez votre texte ici..."></textarea>
+                            <button id="summarize-btn" class="mt-4 w-full bg-emerald-500 text-white py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors flex items-center justify-center space-x-2">
+                                <span id="summarize-btn-text">Résumer le texte</span>
+                                <div id="summarize-spinner" class="loading-animation hidden"></div>
+                            </button>
+                            <div id="summarize-output" class="mt-4 p-4 bg-white rounded-lg border border-stone-200 hidden"></div>
+                        </div>
+
+                        <!-- Générer un Moodboard -->
+                        <div class="p-6 border border-stone-200 rounded-lg bg-stone-50/50">
+                            <h3 class="text-xl font-bold text-emerald-700">✨ Générer un Moodboard Créatif</h3>
+                            <p class="mt-2 text-sm text-stone-600">Décrivez une idée ou une ambiance et l'IA créera une image. Idéal pour des moodboards rapides.</p>
+                            <textarea id="prompt-moodboard" class="mt-4 w-full p-4 border border-stone-300 rounded-lg" rows="2" placeholder="Ex: 'Un film d'animation de science-fiction, style cyberpunk, ambiance nostalgique années 80, couleurs néon'"></textarea>
+                            <button id="generate-moodboard-btn" class="mt-4 w-full bg-emerald-500 text-white py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors flex items-center justify-center space-x-2">
+                                <span id="moodboard-btn-text">Générer le moodboard</span>
+                                <div id="moodboard-spinner" class="loading-animation hidden"></div>
+                            </button>
+                            <div id="moodboard-output" class="mt-4 p-4 bg-white rounded-lg border border-stone-200 flex items-center justify-center hidden"></div>
+                        </div>
+
+                        <!-- Assistant créatif -->
+                        <div class="p-6 border border-stone-200 rounded-lg bg-stone-50/50">
+                            <h3 class="text-xl font-bold text-emerald-700">✨ Assistant Conversationnel</h3>
+                            <p class="mt-2 text-sm text-stone-600">Posez des questions sur l'optimisation de production ou la pré-production.</p>
+                            <div id="chat-container" class="mt-4 p-4 h-64 overflow-y-auto bg-white rounded-lg border border-stone-200 space-y-4"></div>
+                            <div class="mt-4 flex space-x-2">
+                                <input type="text" id="chat-input" class="flex-1 p-3 border border-stone-300 rounded-lg" placeholder="Posez votre question...">
+                                <button id="chat-send-btn" class="bg-emerald-500 text-white p-3 rounded-lg hover:bg-emerald-600 transition-colors">
+                                    ▶️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="slide5" class="slide mt-12 flex flex-col items-center justify-center bg-white rounded-2xl shadow-xl p-8">
+                <div class="w-full max-w-4xl text-center">
+                     <h2 class="text-3xl md:text-4xl font-bold text-stone-900">Votre Plan d'Action en 3 Étapes Simples</h2>
+                     <p class="mt-4 mb-12 text-lg text-stone-600">Une approche progressive pour une adoption en douceur, centrée sur vous dans un premier temps.</p>
+                </div>
+                <div class="w-full max-w-5xl grid md:grid-cols-3 gap-8">
+                    <div class="border-t-4 border-emerald-500 bg-stone-50 p-8 rounded-lg text-center">
+                        <div class="text-3xl font-bold text-emerald-500 mb-2">Étape 1</div>
+                        <h3 class="text-xl font-bold mb-2">Immersion Personnelle</h3>
+                        <p class="font-semibold text-amber-700 mb-4">(1 Semaine)</p>
+                        <p class="text-stone-600">Choisissez UN cas d'usage (ex: résumer vos emails) et appliquez-le systématiquement. L'objectif est de vous familiariser avec l'outil et de constater le bénéfice immédiat sans perturber votre routine.</p>
+                    </div>
+                     <div class="border-t-4 border-emerald-500 bg-stone-50 p-8 rounded-lg text-center">
+                        <div class="text-3xl font-bold text-emerald-500 mb-2">Étape 2</div>
+                        <h3 class="text-xl font-bold mb-2">Intégration sur un Projet</h3>
+                        <p class="font-semibold text-amber-700 mb-4">(2-3 Semaines)</p>
+                        <p class="text-stone-600">Utilisez <strong class="text-stone-800">NotebookLM</strong> sur un projet pilote. Centralisez-y tous les documents clés. Servez-vous-en pour préparer vos réunions et répondre rapidement aux questions de l'équipe ou du client.</p>
+                    </div>
+                     <div class="border-t-4 border-emerald-500 bg-stone-50 p-8 rounded-lg text-center">
+                        <div class="text-3xl font-bold text-emerald-500 mb-2">Étape 3</div>
+                        <h3 class="text-xl font-bold mb-2">Expansion Ciblée</h3>
+                        <p class="font-semibold text-amber-700 mb-4">(Mois 2+)</p>
+                        <p class="text-stone-600">Une fois à l'aise, identifiez un membre de votre équipe (ex: un producteur) pour lui transmettre l'usage d'un outil. Montrez-lui comment vous l'utilisez. L'adoption se fera naturellement par l'exemple.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : undefined;
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Firebase auth error:", error);
+            }
+        }
+    });
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show';
+    }
+
+    const summarizeBtn = document.getElementById('summarize-btn');
+    const summarizeBtnText = document.getElementById('summarize-btn-text');
+    const summarizeSpinner = document.getElementById('summarize-spinner');
+    const summarizeInput = document.getElementById('text-input-summarize');
+    const summarizeOutput = document.getElementById('summarize-output');
+
+    summarizeBtn.addEventListener('click', async () => {
+        const textToSummarize = summarizeInput.value;
+        if (!textToSummarize) {
+            showToast("Veuillez coller du texte à résumer.");
+            return;
+        }
+
+        summarizeBtn.disabled = true;
+        summarizeBtnText.textContent = "Résumé en cours...";
+        summarizeSpinner.classList.remove('hidden');
+        summarizeOutput.classList.add('hidden');
+
+        try {
+            const systemPrompt = "Vous êtes un assistant IA pour un producteur exécutif. Résumez le texte fourni en 3 à 5 points clés. Le ton doit être concis et professionnel.";
+            const userQuery = `Résumez le texte suivant :\n\n"${textToSummarize}"`;
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            const summary = result.candidates?.[0]?.content?.parts?.[0]?.text || "Impossible de générer un résumé.";
+            
+            summarizeOutput.innerHTML = `<p class="font-semibold mb-2">Résumé :</p><p>${summary}</p>`;
+            summarizeOutput.classList.remove('hidden');
+
+        } catch (error) {
+            console.error('API Error:', error);
+            showToast("Erreur lors de la connexion à l'API. Veuillez réessayer.");
+            summarizeOutput.textContent = "Une erreur est survenue lors du résumé du texte.";
+            summarizeOutput.classList.remove('hidden');
+        } finally {
+            summarizeBtn.disabled = false;
+            summarizeBtnText.textContent = "Résumer le texte";
+            summarizeSpinner.classList.add('hidden');
+        }
+    });
+
+    const generateMoodboardBtn = document.getElementById('generate-moodboard-btn');
+    const moodboardBtnText = document.getElementById('moodboard-btn-text');
+    const moodboardSpinner = document.getElementById('moodboard-spinner');
+    const promptMoodboard = document.getElementById('prompt-moodboard');
+    const moodboardOutput = document.getElementById('moodboard-output');
+
+    generateMoodboardBtn.addEventListener('click', async () => {
+        const prompt = promptMoodboard.value;
+        if (!prompt) {
+            showToast("Veuillez décrire le moodboard à générer.");
+            return;
+        }
+
+        generateMoodboardBtn.disabled = true;
+        moodboardBtnText.textContent = "Génération en cours...";
+        moodboardSpinner.classList.remove('hidden');
+        moodboardOutput.innerHTML = '';
+        moodboardOutput.classList.add('hidden');
+
+        try {
+            const payload = {
+                instances: {
+                    prompt: prompt
+                },
+                parameters: {
+                    "sampleCount": 1
+                }
+            };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            const base64Data = result?.predictions?.[0]?.bytesBase64Encoded;
+            if (base64Data) {
+                const imageUrl = `data:image/png;base64,${base64Data}`;
+                moodboardOutput.innerHTML = `<img src="${imageUrl}" class="rounded-lg max-w-full h-auto shadow-md" alt="Moodboard généré par IA">`;
+                moodboardOutput.classList.remove('hidden');
+            } else {
+                showToast("Échec de la génération d'image.");
+            }
+        } catch (error) {
+            console.error('API Error:', error);
+            showToast("Erreur lors de la connexion à l'API. Veuillez réessayer.");
+        } finally {
+            generateMoodboardBtn.disabled = false;
+            moodboardBtnText.textContent = "Générer le moodboard";
+            moodboardSpinner.classList.add('hidden');
+        }
+    });
+
+    const chatInput = document.getElementById('chat-input');
+    const chatSendBtn = document.getElementById('chat-send-btn');
+    const chatContainer = document.getElementById('chat-container');
+    let chatHistory = [];
+
+    const appendMessage = (sender, text) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `p-3 rounded-lg ${sender === 'user' ? 'bg-emerald-100 text-right self-end' : 'bg-stone-100 self-start'} max-w-[80%]`;
+        messageDiv.textContent = text;
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    };
+
+    const processChat = async () => {
+        const userPrompt = chatInput.value;
+        if (!userPrompt) return;
+
+        appendMessage('user', userPrompt);
+        chatInput.value = '';
+        chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
+
+        chatSendBtn.disabled = true;
+        chatInput.disabled = true;
+
+        try {
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: chatHistory,
+                systemInstruction: { parts: [{ text: "Vous êtes un assistant IA spécialisé dans l'industrie audiovisuelle. Répondez aux questions avec des conseils pertinents et des informations pratiques pour un producteur exécutif." }] },
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            const botResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "Désolé, je n'ai pas pu générer de réponse.";
+            appendMessage('model', botResponse);
+            chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+
+        } catch (error) {
+            console.error('API Error:', error);
+            appendMessage('model', "Désolé, je ne peux pas me connecter. Veuillez réessayer.");
+        } finally {
+            chatSendBtn.disabled = false;
+            chatInput.disabled = false;
+            chatInput.focus();
+        }
+    };
+
+    chatSendBtn.addEventListener('click', processChat);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            processChat();
+        }
+    });
+
+
+    const ctx = document.getElementById('impactChart').getContext('2d');
+    const impactChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Gestion Emails', 'Synthèse Réunions', 'Recherche d\'Infos', 'Reporting'],
+            datasets: [{
+                label: 'Heures Gagnées par Semaine',
+                data: [5, 3, 4, 2],
+                backgroundColor: [
+                    'rgba(16, 185, 129, 0.6)',
+                    'rgba(245, 158, 11, 0.6)',
+                    'rgba(16, 185, 129, 0.4)',
+                    'rgba(245, 158, 11, 0.4)'
+                ],
+                borderColor: [
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(245, 158, 11, 1)',
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(245, 158, 11, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Heures'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y + ' heures';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navMenu = document.getElementById('nav-menu');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const id = entry.target.getAttribute('id');
+            const navLink = navMenu.querySelector(`a[href="#${id}"]`);
+
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => link.classList.remove('text-emerald-600', 'font-bold'));
+                navLinks.forEach(link => link.classList.add('text-stone-600', 'font-medium'));
+                if(navLink){
+                    navLink.classList.add('text-emerald-600', 'font-bold');
+                    navLink.classList.remove('text-stone-600', 'font-medium');
+                }
+            }
+        });
+    }, { rootMargin: "-50% 0px -50% 0px" });
+
+    document.querySelectorAll('section[id]').forEach((section) => {
+        observer.observe(section);
+    });
+</script>
+
+</body>
+</html>
