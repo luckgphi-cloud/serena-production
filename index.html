@@ -299,7 +299,7 @@
         try {
             const systemPrompt = "Vous êtes un assistant IA pour un producteur exécutif. Résumez le texte fourni en 3 à 5 points clés. Le ton doit être concis et professionnel.";
             const userQuery = `Résumez le texte suivant :\n\n"${textToSummarize}"`;
-            const apiKey = "";
+            const apiKey = "AIzaSyAj5J-u6SygMCVA33vRkQifPNEnrbv7D7o";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
             const payload = {
@@ -359,7 +359,7 @@
                     "sampleCount": 1
                 }
             };
-            const apiKey = "";
+            const apiKey = "AIzaSyAj5J-u6SygMCVA33vRkQifPNEnrbv7D7o";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -411,7 +411,7 @@
         chatInput.disabled = true;
 
         try {
-            const apiKey = "";
+            const apiKey = "AIzaSyAj5J-u6SygMCVA33vRkQifPNEnrbv7D7o";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             
             const payload = {
